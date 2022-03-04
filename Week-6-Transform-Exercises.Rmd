@@ -1,6 +1,6 @@
 ---
 title: "Transform Data"
-output: html_notebook
+output: github_document
 ---
 
 
@@ -13,7 +13,11 @@ library(babynames)
 
 
 # dplyr
-
+```{r}
+babynames %>% 
+  summarise(total = sum(n), max = max(n), 
+            min = min(n), total2 = sum(n^2))
+```
 
 
 ## Your Turn 1
@@ -26,9 +30,15 @@ Copmplete the code below to extract the rows where `name == "Khaleesi"`. Then us
 *(Hint: Be sure to remove each `_` before running the code)*
 
 ```{r}
-babynames ___ 
-  filter(_______________________) ___
-  ___________(total = ________, first = _______)
+babynames %>%  
+  filter(name == "Khaleesi") %>% 
+  summarise(total = sum(n), first = min(year))
+```
+
+```{r}
+babynames %>% 
+  group_by(sex) %>% 
+  summarise(total = sum(n))
 ```
 
 ## Your Turn 2
@@ -39,9 +49,22 @@ Use `group_by()`, `summarise()`, and `arrange()` to display the ten most popular
 
 ```{r}
 babynames %>%
-  _______(name, sex) %>% 
-  _______(total = _____(n)) %>% 
-  _______(desc(_____))
+  group_by(name, sex) %>% 
+  summarise(total = sum(n)) %>% 
+  arrange(desc(total)) %>% 
+  head(10) %>% 
+  ggplot() +
+  geom_col(aes(x = fct_reorder(name, desc(total)), y = total, fill = sex)) +
+  labs(x = "10 most popular names", 
+       y = "Total Number Born") +
+  guides(fill = FALSE) +
+  theme_bw() +
+  scale_fill_manual(values = c("blue", "lightblue"))
+```
+
+```{r}
+babynames %>% 
+  mutate(percent = round(100*prop, 2))
 ```
 
 
@@ -54,8 +77,11 @@ Rank each name _within its year and sex_.
 
 ```{r}
 babynames %>% 
-  group_by(____, ____) %>% 
-  ______(rank = min_rank(____(prop)))
+  group_by(year, sex) %>% 
+  mutate(rank = min_rank(desc(prop))) %>% 
+  group_by(name, sex) %>% 
+  summarise(avg_rank = mean(rank)) %>% 
+  arrange(avg_rank)
 ```
 
 

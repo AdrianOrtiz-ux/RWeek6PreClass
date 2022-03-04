@@ -1,0 +1,71 @@
+---
+title: "Transform Data"
+output: html_notebook
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment="")
+library(tidyverse)
+# install.packages("babynames")
+library(babynames)
+```
+
+
+# dplyr
+
+
+
+## Your Turn 1
+
+Copmplete the code below to extract the rows where `name == "Khaleesi"`. Then use `summarise()` and `sum()` and `min()` to find:
+
+1. The total number of children named Khaleesi
+2. The first year Khaleesi appeared in the data
+
+*(Hint: Be sure to remove each `_` before running the code)*
+
+```{r}
+babynames ___ 
+  filter(_______________________) ___
+  ___________(total = ________, first = _______)
+```
+
+## Your Turn 2
+
+Use `group_by()`, `summarise()`, and `arrange()` to display the ten most popular names. Compute popularity as the *total* number of children of a single gender given a name.
+
+*(Hint: Be sure to remove each `_` before running the code)*
+
+```{r}
+babynames %>%
+  _______(name, sex) %>% 
+  _______(total = _____(n)) %>% 
+  _______(desc(_____))
+```
+
+
+## Your Turn 3
+
+Fill in the blanks to: 
+Rank each name _within its year and sex_. 
+
+*(Hint: Be sure to remove each `_` before running the code)*
+
+```{r}
+babynames %>% 
+  group_by(____, ____) %>% 
+  ______(rank = min_rank(____(prop)))
+```
+
+
+***
+
+# Take aways
+
+* Make tables of summaries with `summarise()`  
+* Make new variables, with `mutate()`  
+* Do groupwise operations with `group_by()`
+
+* Connect operations with `%>%`  
+
